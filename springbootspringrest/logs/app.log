@@ -1,0 +1,98 @@
+2017-08-13 22:54:58 com.ddlab.rnd.spring.boot.app.Application - Starting Application on PIKU-PC with PID 11464 (E:\spring-boot-security-oxygen-2017\springbootspringrest\target\classes started by PIKU in E:\spring-boot-security-oxygen-2017\springbootspringrest)
+2017-08-13 22:54:58 com.ddlab.rnd.spring.boot.app.Application - Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
+2017-08-13 22:54:58 com.ddlab.rnd.spring.boot.app.Application - No active profile set, falling back to default profiles: default
+2017-08-13 22:55:00 org.springframework.web.filter.CommonsRequestLoggingFilter - Initializing filter 'logFilter'
+2017-08-13 22:55:00 org.springframework.web.filter.CommonsRequestLoggingFilter - Filter 'logFilter' configured successfully
+2017-08-13 22:55:01 org.apache.coyote.http11.Http11NioProtocol - Failed to start end point associated with ProtocolHandler ["http-nio-127.0.0.1-8091"]
+java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Unknown Source)
+	at sun.nio.ch.Net.bind(Unknown Source)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(Unknown Source)
+	at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:210)
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:978)
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:628)
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:993)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:225)
+	at org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.addPreviouslyRemovedConnectors(TomcatEmbeddedServletContainer.java:247)
+	at org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.start(TomcatEmbeddedServletContainer.java:190)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.startEmbeddedServletContainer(EmbeddedWebApplicationContext.java:297)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.finishRefresh(EmbeddedWebApplicationContext.java:145)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:545)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration.createChildManagementContext(EndpointWebMvcAutoConfiguration.java:193)
+	at org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration.afterSingletonsInstantiated(EndpointWebMvcAutoConfiguration.java:156)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:781)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:370)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1162)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1151)
+	at com.ddlab.rnd.spring.boot.app.Application.main(Application.java:33)
+2017-08-13 22:55:01 org.apache.catalina.core.StandardService - Failed to start connector [Connector[HTTP/1.1-8091]]
+org.apache.catalina.LifecycleException: Failed to start component [Connector[HTTP/1.1-8091]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:167)
+	at org.apache.catalina.core.StandardService.addConnector(StandardService.java:225)
+	at org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.addPreviouslyRemovedConnectors(TomcatEmbeddedServletContainer.java:247)
+	at org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.start(TomcatEmbeddedServletContainer.java:190)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.startEmbeddedServletContainer(EmbeddedWebApplicationContext.java:297)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.finishRefresh(EmbeddedWebApplicationContext.java:145)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:545)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration.createChildManagementContext(EndpointWebMvcAutoConfiguration.java:193)
+	at org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration.afterSingletonsInstantiated(EndpointWebMvcAutoConfiguration.java:156)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:781)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:370)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1162)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1151)
+	at com.ddlab.rnd.spring.boot.app.Application.main(Application.java:33)
+Caused by: org.apache.catalina.LifecycleException: service.getName(): "Tomcat";  Protocol handler start failed
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:1000)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+	... 19 common frames omitted
+Caused by: java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Unknown Source)
+	at sun.nio.ch.Net.bind(Unknown Source)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(Unknown Source)
+	at sun.nio.ch.ServerSocketAdaptor.bind(Unknown Source)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:210)
+	at org.apache.tomcat.util.net.AbstractEndpoint.start(AbstractEndpoint.java:978)
+	at org.apache.coyote.AbstractProtocol.start(AbstractProtocol.java:628)
+	at org.apache.catalina.connector.Connector.startInternal(Connector.java:993)
+	... 20 common frames omitted
+2017-08-13 22:55:01 org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8091 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8091, or configure this application to listen on another port.
+
+2017-08-13 22:55:09 com.ddlab.rnd.spring.boot.app.Application - Starting Application on PIKU-PC with PID 12036 (E:\spring-boot-security-oxygen-2017\springbootspringrest\target\classes started by PIKU in E:\spring-boot-security-oxygen-2017\springbootspringrest)
+2017-08-13 22:55:09 com.ddlab.rnd.spring.boot.app.Application - Running with Spring Boot v1.5.3.RELEASE, Spring v4.3.8.RELEASE
+2017-08-13 22:55:09 com.ddlab.rnd.spring.boot.app.Application - No active profile set, falling back to default profiles: default
+2017-08-13 22:55:10 org.springframework.web.filter.CommonsRequestLoggingFilter - Initializing filter 'logFilter'
+2017-08-13 22:55:10 org.springframework.web.filter.CommonsRequestLoggingFilter - Filter 'logFilter' configured successfully
+2017-08-13 22:55:12 com.ddlab.rnd.spring.boot.app.Application - Started Application in 3.302 seconds (JVM running for 4.061)
+2017-08-13 22:55:16 org.springframework.web.filter.CommonsRequestLoggingFilter - Before request [uri=/springbootrest/emc/create1;headers={cache-control=[no-cache], postman-token=[b52fe5d1-64ae-4662-9089-fa113764f16b], accept=[application/json], user-agent=[PostmanRuntime/6.2.5], host=[localhost:8090], accept-encoding=[gzip, deflate], content-length=[59], connection=[keep-alive], Content-Type=[application/json;charset=UTF-8]}]
+2017-08-13 22:55:16 org.springframework.web.filter.CommonsRequestLoggingFilter - REQUEST DATA : uri=/springbootrest/emc/create1;headers={cache-control=[no-cache], postman-token=[b52fe5d1-64ae-4662-9089-fa113764f16b], accept=[application/json], user-agent=[PostmanRuntime/6.2.5], host=[localhost:8090], accept-encoding=[gzip, deflate], content-length=[59], connection=[keep-alive], Content-Type=[application/json;charset=UTF-8]};payload={
+  "firstName": "Deb",
+  "lastName": "Mishra",
+  ]
