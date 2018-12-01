@@ -1,0 +1,91 @@
+
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+body {
+	font-family: Helvetica;
+	font-size: 14px;
+}
+.msg-container {
+	margin: 10px 0px 7px 0px;
+	line-height: 25px;
+	text-shadow: 0px 1px 0px #FAFAFA;
+	font-size: 13px;
+}
+.error {
+	color: #B91100;
+}
+.logout {
+	color: green;
+}
+.time {
+	color: orange;
+}
+.input-text {
+	-webkit-box-shadow: inset 0px 0px 4px 0px #E1E1E1;
+	-moz-box-shadow: inset 0px 0px 4px 0px #E1E1E1;
+	box-shadow: inset 0px 0px 4px 0px #E1E1E1;
+	background-color: #FAFAFA;
+	border-color: #A4A4A4 #C1C1C1 #E1E1E1;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 2px 27px 2px 9px;
+	height: 32px;
+	width: 223px;
+	font-size: 16px;
+	color: #858585;
+}
+.input-error {
+	-webkit-box-shadow: 0px 0px 1px #B91100;
+	-moz-box-shadow: 0px 0px 1px #B91100;
+	box-shadow: 0px 0px 1px #B91100;
+	border: 1px solid #B91100;
+}
+input.input-text:focus {
+	-webkit-box-shadow: inset 0px 0px 5px 0px #898B8C !important;
+	-moz-box-shadow: inset 0px 0px 5px 0px #898B8C !important;
+	box-shadow: inset 0px 0px 5px 0px #898B8C !important;
+	border-color: #898B8C !important;
+	outline: none;
+}
+input.input-text:hover {
+	border-color: #909090 !important;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+.submit-container {
+	line-height: 65px;
+	clear: both;
+}
+.submit-btn {
+	padding: 7px 15px 6px 16px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	background-color: #F3F3F3;
+	text-shadow: 0 1px 0 #F2F2F2;
+	text-decoration: none;
+	font: bold 11px Arial;
+	white-space: nowrap;
+	text-align: center;
+	cursor: pointer;
+	color: #444;
+	background-image: -webkit-gradient(linear,00,0100%,from(#FEFEFE),to(#F3F3F3));
+	background-image: -webkit-linear-gradient(top,#FEFEFE,#F3F3F3);
+	background-image: -moz-linear-gradient(top,#FEFEFE,#F3F3F3);
+	background-image: -o-linear-gradient(top,#FEFEFE,#F3F3F3);
+	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FEFEFE, endColorstr=#F3F3F3)";
+}
+.submit-btn:hover {
+	box-shadow: inset 0px 1px 2px rgba(0,0,0,0.2);
+	border-color: #CCC;
+	color: #222;
+}

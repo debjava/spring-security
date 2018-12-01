@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 
+		http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:component-scan base-package="com.ddlab.rnd.spring.oauth2"/>
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	
+	<bean id="oauthAccessDeniedHandler"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler">
+	</bean>	
+	
+	<bean id="clientAuthenticationEntryPoint"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+	</bean>
+	
+	<http pattern="/oauth/token" create-session="stateless"
+		authentication-manager-ref="authenticationManager"
+		xmlns="http://www.springframework.org/schema/security" > 
+		<intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY" />
+		<anonymous enabled="false" />
+		
+		<http-basic entry-point-ref="clientAuthenticationEntryPoint" />
+		
+		<custom-filter ref="clientCredentialsTokenEndpointFilter" before="PRE_AUTH_FILTER" /> 
+		<access-denied-handler ref="oauthAccessDeniedHandler" />
+	</http>
+	
+	<http pattern="/logout" create-session="never" 
+		entry-point-ref="oauthAuthenticationEntryPoint"
+	 	xmlns="http://www.springframework.org/schema/security">
+		<anonymous enabled="false" />
+		<intercept-url pattern="/logout" method="GET" />
+		<sec:logout invalidate-session="true" logout-url="/logout" success-handler-ref="logoutSuccessHandler"   />
+		<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+		<access-denied-handler ref="oauthAccessDeniedHandler" />
+	</http>
+	
+	
+	<bean id="oauthAuthenticationEntryPoint"
+		class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+	</bean>
+	
+	<http pattern="/resources/**" create-session="never"
+		entry-point-ref="oauthAuthenticationEntryPoint"
+		xmlns="http://www.springframework.org/schema/security">
+		<anonymous enabled="false" />
+		
+		<intercept-url pattern="/resources/**" access="IS_AUTHENTICATED_FULLY"/>
+		
+		<custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+		
+		<access-denied-handler ref="oauthAccessDeniedHandler" />
+	</http>
+	
+	
+	<bean id="clientCredentialsTokenEndpointFilter"
+		class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+	
+	<authentication-manager alias="authenticationManager"
+		xmlns="http://www.springframework.org/schema/security">
+		<authentication-provider user-service-ref="clientDetailsUserService" />
+	</authentication-manager>
+	
+		
+	<bean id="logoutSuccessHandler" class="com.ddlab.rnd.spring.oauth2.security.LogoutImpl" >
+		<property name="tokenstore" ref="tokenStore"></property>
+	</bean>
+	
+	
+	
+
+	
+	
+	<bean id="tokenStore"
+		class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore" />
+	
+	<bean id="tokenServices" 
+		class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+		<property name="tokenStore" ref="tokenStore" />
+		<property name="supportRefreshToken" value="true" />
+		<property name="accessTokenValiditySeconds" value="300000"></property>
+		<property name="clientDetailsService" ref="clientDetails" />
+	</bean>
+	
+	<bean id="clientDetails" class="com.ddlab.rnd.spring.oauth2.security.ClientDetailsServiceImpl"/>
+	
+	<bean id="clientDetailsUserService"
+		class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+		<constructor-arg ref="clientDetails" />
+	</bean>
+	
+	
+	
+	<!-- For all server side -->
+	
+	<bean id="customUserAuthenticationProvider"
+		class="com.ddlab.rnd.spring.oauth2.security.CustomUserAuthenticationProvider">
+	</bean>
+	
+	
+	<!-- For server side -->
+	<authentication-manager id="userAuthenticationManager" 
+		xmlns="http://www.springframework.org/schema/security">
+		<authentication-provider  ref="customUserAuthenticationProvider">
+		</authentication-provider>
+	</authentication-manager>
+	
+	<!-- For server side -->
+	<oauth:authorization-server
+		client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+		<oauth:authorization-code />
+		<oauth:implicit/>
+		<oauth:refresh-token/>
+		<oauth:client-credentials />
+		<oauth:password authentication-manager-ref="userAuthenticationManager"/>
+	</oauth:authorization-server>
+
+
+	<oauth:resource-server id="resourceServerFilter"
+		resource-id="springsec" token-services-ref="tokenServices" />
+
+	
+	
+</beans>

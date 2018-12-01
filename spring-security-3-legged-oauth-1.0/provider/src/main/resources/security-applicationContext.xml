@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns="http://www.springframework.org/schema/security" 
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:oauth="http://www.springframework.org/schema/security/oauth" 
+		xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/security/oauth
+		http://www.springframework.org/schema/security/spring-security-oauth.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- ================================================================================== -->
+	<!-- Spring Annotation Driven Components -->
+	<!-- ================================================================================== -->
+
+	<context:annotation-config />
+
+	<!-- ================================================================================== -->
+	<!-- Global Security Settings -->
+	<!-- ================================================================================== -->
+
+	<!-- This allows authorization annotations to be used in our classes. See the Controllers. -->
+
+	<global-method-security pre-post-annotations="enabled" />
+
+	<!-- ================================================================================== -->
+	<!-- Static Content Security -->
+	<!-- ================================================================================== -->
+
+	<!-- This is here to ensure that the static content (JavaScript, CSS, etc) is accessible -->
+	<!-- from the login page without authentication -->
+
+	<http security="none" pattern="/static/**" />
+
+	<!-- ================================================================================== -->
+	<!-- Form Login Security -->
+	<!-- ================================================================================== -->
+	
+	<http use-expressions="true" access-denied-page="/login.jsp">
+		<form-login authentication-failure-url="/login.jsp" default-target-url="/index.jsp" login-page="/login.jsp" 
+					login-processing-url="/login.do" username-parameter="username" password-parameter="password"/>
+   		<logout logout-success-url="/login.jsp?out=1" logout-url="/logout.do"/>
+   		
+   		<!-- <intercept-url requires-channel="https" pattern="/login.jsp" access="permitAll()" />
+   		<intercept-url requires-channel="https" pattern="/**" access="hasRole('ROLE_USER')" /> -->
+		
+		<intercept-url  pattern="/login.jsp" access="permitAll()" />
+   		<intercept-url  pattern="/**" access="hasRole('ROLE_USER')" />
+		
+		
+	</http>
+	
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider>
+			<user-service>
+				<user name="user" password="user" authorities="ROLE_USER"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	
+
+	<!-- ================================================================================== -->
+	<!-- OAuth 1.0 3-Legged Security -->
+	<!-- ================================================================================== -->	
+
+	<b:bean id="oAuthAuthenticationHandler" class="org.springframework.security.oauth.provider.DefaultAuthenticationHandler" />
+	<b:bean id="consumerDetailsService" class="org.codehustler.oauth.OAuthConsumerDetailsService"/>
+
+	<oauth:provider consumer-details-service-ref="consumerDetailsService"
+					token-id-param="oauth_token"
+                  	token-services-ref="tokenServices"
+                  	request-token-url="/oauth/request_token"
+                  	user-approval-url="/oauth/confirm_access"
+                  	authenticate-token-url="/oauth/authorize_token"
+                  	access-token-url="/oauth/access_token"
+					auth-handler-ref="oAuthAuthenticationHandler" 
+					access-granted-url="/request_token_authorized.jsp"
+                  	require10a="false" />
+
+	<oauth:token-services id="tokenServices" />
+
+</b:beans>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-3.2.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+      
+      <global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
+      
+      <beans:bean id="restAuthenticationEntryPoint" class="com.ddlab.spring.security.RestAuthenticationEntryPoint"/>
+      
+      <beans:bean id="authenticationTokenProcessingFilter" class="com.ddlab.spring.security.AuthenticationTokenProcessingFilter">
+		</beans:bean>	
+		
+		<beans:bean id="logoutHandler" class="com.ddlab.spring.security.LogoutSuccessHandler"/>
+
+    <http use-expressions="true" entry-point-ref="restAuthenticationEntryPoint" disable-url-rewriting="true" >
+        <intercept-url pattern="/api/**" access="isAuthenticated()" />
+        <!-- <intercept-url pattern="/**" access="isAuthenticated()" /> -->
+        <!-- <intercept-url pattern="/" access="permitAll" /> -->
+        <!-- <sec:form-login authentication-success-handler-ref="mySuccessHandler" authentication-failure-handler-ref="myFailureHandler" username-parameter="username" password-parameter="password"/> -->
+        
+        <!-- <sec:custom-filter ref="authenticationTokenProcessingFilter" position="BASIC_AUTH_FILTER" /> -->
+        
+        <sec:custom-filter ref="authenticationTokenProcessingFilter" position="BASIC_AUTH_FILTER" />
+        
+        <!-- <sec:intercept-url pattern="/j_spring_security_check/"
+			access="permitAll" /> -->
+        
+        <sec:form-login authentication-success-handler-ref="mySuccessHandler" 
+        authentication-failure-handler-ref="myFailureHandler" />
+        
+        
+        
+		<logout success-handler-ref="logoutHandler"/>
+        <!-- <logout logout-url="/mylogout"/> -->
+    </http>
+
+    <beans:bean id="mySuccessHandler" class="com.ddlab.spring.security.MySavedRequestAwareAuthenticationSuccessHandler" />
+    <beans:bean id="myFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
+
+    <authentication-manager alias="authenticationManager" erase-credentials="false">
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="admin" authorities="ROLE_ADMIN" />
+                <user name="d" password="d" authorities="ROLE_USER" />
+                <user name="s" password="s" authorities="ROLE_STAFF" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+    
+    <beans:bean id="bankApiImpl" class="com.ddlab.spring.models.BankApiImpl"/>
+
+</beans:beans>

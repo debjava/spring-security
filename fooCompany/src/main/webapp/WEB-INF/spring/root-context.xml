@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+              http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<http auto-config='true'>
+		<!-- <intercept-url pattern="/**" access="ROLE_USER" /> -->
+		<intercept-url pattern="/**"  access="ROLE_USER" />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="a" password="a" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+ 
+ 
+ <!-- <authentication-manager alias="authenticationManager" /> -->
+ 
+ 
+ 
+ 
+	<!--apply the oauth client context -->
+	<oauth:client token-services-ref="oauth2TokenServices" />
+
+	<beans:bean id="oauth2TokenServices"
+		class="org.springframework.security.oauth2.consumer.token.InMemoryOAuth2ClientTokenServices" />
+
+	<!-- <oauth:resource id="cv" type="authorization_code"
+		clientId="foo" accessTokenUri="http://localhost:8080/cv/oauth/authorize"
+		userAuthorizationUri="http://localhost:8080/cv/oauth/user/authorize" /> -->
+		
+		
+	<oauth:resource id="cv" type="authorization_code"
+		clientId="foo" accessTokenUri="http://localhost:8080/cv/oauth/authorize"
+		userAuthorizationUri="http://localhost:8080/cv/oauth/user/authorize" />	
+		
+		
+	<!-- <oauth:resource id="cv" type="authorization_code"
+		clientId="client1" 
+		accessTokenUri="http://localhost:8080/MyAuthServer/login" 
+		userAuthorizationUri="http://localhost:8080/MyAuthServer/oauth/authorize" 
+		bearerTokenName="oauth_token" 
+		scope="read,write,delete" />	 -->
+		
+		
+		
+	<!-- <beans:bean id="cvService" class="org.springsource.oauth.CVServiceImpl">
+	 	<beans:property name="cvURL" value="http://localhost:8080/MyAuthServer/cvs"></beans:property>
+	 	<beans:property name="cvRestTemplate">
+	 		<beans:bean class="org.springframework.security.oauth2.consumer.OAuth2RestTemplate">
+        		<beans:constructor-arg ref="cv"/>
+      		</beans:bean>
+	 	</beans:property>
+	 	<beans:property name="tokenServices" ref="oauth2TokenServices"></beans:property>
+	 </beans:bean>	 -->
+
+	 
+	 <beans:bean id="cvService" class="org.springsource.oauth.CVServiceImpl">
+	 	<beans:property name="cvURL" value="http://localhost:8080/cv/cvs"></beans:property>
+	 	<beans:property name="cvRestTemplate">
+	 		<beans:bean class="org.springframework.security.oauth2.consumer.OAuth2RestTemplate">
+        		<beans:constructor-arg ref="cv"/>
+      		</beans:bean>
+	 	</beans:property>
+	 	<beans:property name="tokenServices" ref="oauth2TokenServices"></beans:property>
+	 </beans:bean>
+
+</beans:beans>

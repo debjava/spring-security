@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/security" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/security/oauth2
+		http://www.springframework.org/schema/security/spring-security-oauth2.xsd">
+		
+		<!-- <http use-expressions="true" authentication-manager-ref="sampleAuthenticationManager"> -->
+
+	<authentication-manager id="sampleAuthenticationManager" alias="authenticationManager">
+		<authentication-provider>
+			<user-service id="userDetailsService">
+				<user name="test1" password="4406" authorities="ROLE_USER"/>
+				<user name="test2" password="4406" authorities="ROLE_USER"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<authentication-manager id="clientAuthenticationManager" >
+		<authentication-provider user-service-ref="clientDetailsUserService"/>
+	</authentication-manager>
+
+	<oauth:authorization-server client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+		<oauth:authorization-code/>
+		<oauth:implicit/>
+		<oauth:refresh-token/>
+		<oauth:client-credentials/>
+		<oauth:password/>
+	</oauth:authorization-server>
+	
+	<oauth:client-details-service id="clientDetails">
+        <oauth:client client-id="tonr" resource-ids="sparklr" authorized-grant-types="authorization_code,implicit"
+                      authorities="ROLE_USER" scope="read,write" secret="secret" />
+    </oauth:client-details-service>
+	
+	
+	
+	
+	<!-- <oauth:client-details-service id="clientDetails">
+		TODO
+	</oauth:client-details-service> -->
+	
+	<oauth:resource-server id="resourceServiceFilter" resource-id="exampleAPI" token-services-ref="tokenServices"/>
+	
+	<beans:bean id="clientCredentialsTokenEndpointFilter" class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+		<beans:property name="authenticationManager" ref="sampleAuthenticationManager" />
+	</beans:bean>
+	
+	<beans:bean id="clientDetailsUserService" class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+		<beans:constructor-arg ref="clientDetails" />
+	</beans:bean>
+	
+	<beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore" />
+	
+	<!-- DB 저장 형식
+	<beans:bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.store.JdbcTokenStore">
+		<beans:constructor-arg ref="dataSource"/>
+	</beans:bean>
+	-->
+	
+	<beans:bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+		<beans:property name="tokenStore" ref="tokenStore" />
+		<beans:property name="supportRefreshToken" value="true" />
+		<beans:property name="clientDetailsService" ref="clientDetails" />
+		<beans:property name="accessTokenValiditySeconds" value="604800" /> <!-- 1주 -->
+	</beans:bean>
+</beans:beans>

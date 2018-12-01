@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<context:annotation-config/>
+	
+	<context:component-scan base-package="com.ddlab.rnd.spring.token" />
+
+	<bean id="unauthorizedEntryPoint" class="com.ddlab.rnd.spring.token.auth.UnauthorizedEntryPoint" />
+	<bean id="tokenAuthFilter" class="com.ddlab.rnd.spring.token.auth.TokenAuthenticationFilter" />
+	<bean id="successHandler" class="com.ddlab.rnd.spring.token.auth.MySuccessHandler" />
+	<bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
+	<bean id="logoutHandler" class="com.ddlab.rnd.spring.token.auth.CustomLogoutSuccessHandler" />
+
+	<!--  create-session="stateless" -->
+	<!-- If you mention create-session="stateless", then cookie based auth will not work -->
+	<!--  invalidate-session="true"  , bydefault it is always true, no need to mention in logout-->
+
+	<security:http use-expressions="true" entry-point-ref="unauthorizedEntryPoint"
+		authentication-manager-ref="authenticationManager">
+
+		<security:intercept-url pattern="/api/1/authservices/authenticate" access="permitAll" />
+		<security:intercept-url pattern="/api/1/authservices/login" access="permitAll" />
+		<security:logout logout-url="/api/1/authservices/logout" success-handler-ref="logoutHandler" />
+		
+		<security:intercept-url pattern="/api/**" access="isAuthenticated()" />
+
+		<security:custom-filter ref="tokenAuthFilter" after="FORM_LOGIN_FILTER" />
+
+		<security:form-login authentication-success-handler-ref="successHandler"
+					login-processing-url="/api/1/authservices/login" 
+					authentication-failure-handler-ref="failureHandler" />
+		</security:http>
+
+	<security:authentication-manager id="authenticationManager">
+		<!-- <security:authentication-provider user-service-ref="userDao"> -->
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="user" password="user" authorities="ROLE_USER" />
+				<security:user name="piku" password="piku" authorities="ROLE_USER" />
+				<security:user name="deba" password="deba" authorities="ROLE_ADMIN" />
+				<security:user name="d" password="d" authorities="ROLE_ADMIN" />
+				<security:user name="a" password="a" authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<!-- <security:http realm="Protected API" use-expressions="true" auto-config="false" 
+		create-session="stateless" entry-point-ref="unauthorizedEntryPoint" 
+		authentication-manager-ref="authenticationManager"> -->
+
+</beans>

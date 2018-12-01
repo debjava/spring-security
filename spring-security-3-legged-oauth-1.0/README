@@ -1,0 +1,28 @@
+----------------------------------------------------------------------------
+spring-security-3-legged-oauth-1.0
+----------------------------------------------------------------------------
+
+1) Unzip the contents of the code sample into your folder of choice
+
+2) Open your console and navigate to the sample's root folder.
+
+3) Type the maven package command:
+
+mvn clean package
+
+4) Navigate to the spring-security-3-legged-oauth-1.0-provider folder and type:
+
+mvn tomcat7:run-war-only
+
+5) Open a second console, navigate to the spring-security-3-legged-oauth-1.0-consumer folder and type:
+
+mvn tomcat7:run-war-only
+
+6) Now you should have access to the following URLs in your favourite browser:
+
+Provider: http://localhost:8443/provider
+Consumer: http://localhost:8444/consumer
+
+Before running the test from the consumer, make sure you visit the Provider server
+and authorise the use of the SSL Certificate. The Certificate is only for development
+so it's not a trusted certificate. If you don't do this, the demo will NOT work.
