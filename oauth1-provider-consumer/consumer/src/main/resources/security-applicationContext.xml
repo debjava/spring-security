@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns="http://www.springframework.org/schema/security" 
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:oauth="http://www.springframework.org/schema/security/oauth" 
+		xsi:schemaLocation="http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/security/oauth
+		http://www.springframework.org/schema/security/spring-security-oauth.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- ================================================================================== -->
+	<!-- Spring Annotation Driven Components -->
+	<!-- ================================================================================== -->
+
+	<context:annotation-config />
+	<context:component-scan base-package="org.codehustler" />
+
+	<!-- ================================================================================== -->
+	<!-- Static Content Security -->
+	<!-- ================================================================================== -->
+
+	<!-- This is here to ensure that the static content (JavaScript, CSS, etc) is accessible -->
+	<!-- from the login page without authentication -->
+
+	<http security="none" pattern="/static/**" />
+
+	<!-- ================================================================================== -->
+	<!-- Client Security Configuration -->
+	<!-- ================================================================================== -->
+
+  	<http use-expressions="true" entry-point-ref="authenticationEntryPoint">
+    	<intercept-url pattern="/**" access="permitAll()" />
+    </http>
+
+	<b:bean id="authenticationEntryPoint" class="org.codehustler.oauth.AuthenticationEntryPointImpl" />
+    
+	<authentication-manager alias="authenticationManager" />
+
+
+	<!-- ================================================================================== -->
+	<!-- OAuth 1.0 3-Legged Client -->
+	<!-- ================================================================================== -->
+	
+	<oauth:consumer resource-details-service-ref="resourceDetails" requireAuthenticated="false" oauth-failure-page="/error.jsp" > 
+		<oauth:url pattern="/api/**" resources="protectedResource"/>
+	</oauth:consumer>
+
+	<oauth:resource-details-service id="resourceDetails">
+		<oauth:resource id="protectedResource"
+		                key="3a4393c3da1a4e316ee66c0cc61c71"
+		                secret="fe1372c074185b19c309964812bb8f3f2256ba514aea8a318f05f9d703d524b8"
+		                request-token-url="http://localhost:8080/provider/oauth/request_token"
+		                user-authorization-url="http://localhost:8080/provider/oauth/confirm_access"
+		                access-token-url="http://localhost:8080/provider/oauth/access_token" 
+		                user-authorization-token-param="oauth_token"/>
+	</oauth:resource-details-service>
+	
+	<b:bean id="oauthRestTemplate" class="org.springframework.security.oauth.consumer.client.OAuthRestTemplate">
+		<b:constructor-arg ref="protectedResource" />
+	</b:bean>
+
+</b:beans>

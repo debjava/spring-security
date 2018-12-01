@@ -13,10 +13,19 @@ public class CVController {
 
 	private CVService cvService;
 	
+	
+	
 	@RequestMapping(value="/cv")
 	public ModelAndView getCV() {
-		System.out.println("CV Service ::::"+cvService);
 		String cv = cvService.getCVContent();
+		
+		
+//		String cvURL = "http://localhost:8080/AuthServer/oauth/tokenManagment";
+//		String cv = restTemplate.getForObject(URI.create(cvURL), String.class);
+		
+		
+//		String cv = "OKKKKKKKKKKKKK";
+		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("cv", cv);
 		ModelAndView modelAndView = new ModelAndView("show", params);
